@@ -15,18 +15,16 @@ int s, t; // номера истока и стока
 vector<vector<Edge>> graph; // Граф в виде списка смежности
 vector<bool> used;
 
-vector<int> match; // само паросочетание - для правой доли - "друзья" из левой
-
 bool dfs(int v) {
-    if (v == t) {return true;}
+    if (v == t) {return true;} // дошли до терминала
     if (used[v]) {return false;}
     used[v] = true;
     for(auto& edge : graph[v]) {
         if (edge.enabled && !used[edge.to]) {
-            bool ans = dfs(edge.to);
-            if (ans) {
+            if (dfs(edge.to)) {
+                // инвертируем рёбра
                 edge.enabled = false;
-                (*edge.back).enabled = true; // инвертировали рёбра
+                (*edge.back).enabled = true; 
                 return true;
             }
         }
